@@ -819,7 +819,7 @@
                         date: false,
                         oldDate: oldDate
                     });
-                    update();
+                    if (options.updateOnSelect) update();
                     return;
                 }
 
@@ -835,7 +835,7 @@
                     input.val(date.format(actualFormat));
                     element.data('date', date.format(actualFormat));
                     unset = false;
-                    update();
+                    if (options.updateOnSelect) update();
                     notifyEvent({
                         type: 'dp.change',
                         date: date.clone(),
@@ -2005,6 +2005,19 @@
             return picker;
         };
 
+        picker.updateOnSelect = function (updateOnSelect) {
+            if (arguments.length === 0) {
+                return options.updateOnSelect;
+            }
+
+            if (typeof updateOnSelect !== 'boolean') {
+                throw new TypeError('updateOnSelect() expects a boolean parameter');
+            }
+
+            options.updateOnSelect = updateOnSelect;
+            return picker;
+        };
+
         picker.focusOnShow = function (focusOnShow) {
             if (arguments.length === 0) {
                 return options.focusOnShow;
@@ -2367,6 +2380,7 @@
         widgetParent: null,
         ignoreReadonly: false,
         keepOpen: false,
+        updateOnSelect: true,
         focusOnShow: true,
         inline: false,
         keepInvalid: false,
